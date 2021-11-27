@@ -66,7 +66,6 @@ public class AdminForm extends javax.swing.JFrame {
         btnBuscarEnf = new javax.swing.JButton();
         btnRegistroEnf = new javax.swing.JButton();
         btnModificarEnf = new javax.swing.JButton();
-        btnEliminarEnf = new javax.swing.JButton();
         txtClaveEnf = new javax.swing.JTextField();
         jPanel3 = new javax.swing.JPanel();
         jLabel15 = new javax.swing.JLabel();
@@ -74,7 +73,6 @@ public class AdminForm extends javax.swing.JFrame {
         btnRegistroVacuna = new javax.swing.JButton();
         btnBuscarVacuna = new javax.swing.JButton();
         btnModificarVacuna = new javax.swing.JButton();
-        btnEliminarVacuna = new javax.swing.JButton();
         jLabel16 = new javax.swing.JLabel();
         txtCantVacuna = new javax.swing.JTextField();
         jLabel17 = new javax.swing.JLabel();
@@ -164,13 +162,6 @@ public class AdminForm extends javax.swing.JFrame {
             }
         });
 
-        btnEliminarEnf.setText("ELIMINAR");
-        btnEliminarEnf.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnEliminarEnfActionPerformed(evt);
-            }
-        });
-
         txtClaveEnf.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
@@ -198,8 +189,7 @@ public class AdminForm extends javax.swing.JFrame {
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(btnRegistroEnf, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(btnBuscarEnf, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btnModificarEnf, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btnEliminarEnf, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(btnModificarEnf, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap())
         );
         jPanel2Layout.setVerticalGroup(
@@ -237,9 +227,7 @@ public class AdminForm extends javax.swing.JFrame {
                     .addGroup(jPanel2Layout.createSequentialGroup()
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(btnModificarEnf, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(btnEliminarEnf, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(84, 84, 84))))
+                        .addGap(84, 120, Short.MAX_VALUE))))
         );
 
         jTabbedPane1.addTab("GESTIÓN ENFERMEROS", jPanel2);
@@ -272,13 +260,6 @@ public class AdminForm extends javax.swing.JFrame {
             }
         });
 
-        btnEliminarVacuna.setText("ELIMINAR");
-        btnEliminarVacuna.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnEliminarVacunaActionPerformed(evt);
-            }
-        });
-
         jLabel16.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
         jLabel16.setText("Cantidad");
 
@@ -308,8 +289,7 @@ public class AdminForm extends javax.swing.JFrame {
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(btnRegistroVacuna, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(btnBuscarVacuna, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btnModificarVacuna, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btnEliminarVacuna, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(btnModificarVacuna, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap())
         );
         jPanel3Layout.setVerticalGroup(
@@ -331,13 +311,11 @@ public class AdminForm extends javax.swing.JFrame {
                         .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(txtDosisVacuna, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jLabel17))
-                        .addGap(61, 61, 61))
+                        .addGap(142, 142, 142))
                     .addGroup(jPanel3Layout.createSequentialGroup()
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(btnModificarVacuna, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(btnEliminarVacuna, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addGap(81, 81, 81))
+                        .addGap(0, 0, Short.MAX_VALUE))))
         );
 
         jTabbedPane1.addTab("GESTIÓN DE VACUNAS", jPanel3);
@@ -592,21 +570,6 @@ public class AdminForm extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_btnBuscarEnfActionPerformed
 
-    private void btnEliminarEnfActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEliminarEnfActionPerformed
-        String usuario = this.txtUsuEnf.getText();
-        if (usuario.isEmpty()) {
-            JOptionPane.showMessageDialog(this, "Debe ingresar el usuario para eliminar al enfermero...", "FALTA INFORMACIÓN", JOptionPane.INFORMATION_MESSAGE);
-        } else {
-            boolean eliminarEnf = this.inicio.getControlador().eliminarEnfermero(usuario);
-            if (eliminarEnf) {
-                borrarCampos();
-                JOptionPane.showMessageDialog(this, "Se ha eliminado el enfermero exitosamente", "ENFERMERO ELIMINADO", JOptionPane.PLAIN_MESSAGE, this.icono_exito);
-            } else {
-                JOptionPane.showMessageDialog(this, "No existe ningún enfermero con ese usuario...", "ENFERMERO NO ELIMINADO", JOptionPane.ERROR_MESSAGE);
-            }
-        }
-    }//GEN-LAST:event_btnEliminarEnfActionPerformed
-
     private void btnBuscarVacunaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBuscarVacunaActionPerformed
         String nombre = this.txtNomVacuna.getText();
         if (nombre.isEmpty()) {
@@ -623,27 +586,10 @@ public class AdminForm extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_btnBuscarVacunaActionPerformed
 
-    private void btnEliminarVacunaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEliminarVacunaActionPerformed
-        String nombre = this.txtNomVacuna.getText();
-        if (nombre.isEmpty()) {
-            JOptionPane.showMessageDialog(this, "Debe ingresar el nombre para eliminar la vacuna...", "FALTA INFORMACIÓN", JOptionPane.INFORMATION_MESSAGE);
-        } else {
-            boolean eliminar = this.inicio.getControlador().eliminarVacuna(nombre);
-            if (eliminar) {
-                borrarCampos();
-                JOptionPane.showMessageDialog(this, "Se ha eliminado la vacuna exitosamente", "VACUNA ELIMINADA", JOptionPane.PLAIN_MESSAGE, this.icono_exito);
-            } else {
-                JOptionPane.showMessageDialog(this, "No existe ninguna vacuna con ese nombre...", "VACUNA NO ELIMINADA", JOptionPane.ERROR_MESSAGE);
-            }
-        }
-    }//GEN-LAST:event_btnEliminarVacunaActionPerformed
-
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnBuscarEnf;
     private javax.swing.JButton btnBuscarVacuna;
     private javax.swing.JButton btnCerrarAdmin;
-    private javax.swing.JButton btnEliminarEnf;
-    private javax.swing.JButton btnEliminarVacuna;
     private javax.swing.JButton btnModificarEnf;
     private javax.swing.JButton btnModificarVacuna;
     private javax.swing.JButton btnRegistroEnf;

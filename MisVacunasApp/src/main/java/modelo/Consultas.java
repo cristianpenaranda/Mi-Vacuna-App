@@ -8,6 +8,7 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -99,20 +100,6 @@ public class Consultas {
         }
         return resp;
     }
-
-    //ELIMINAR ENFERMERO
-    public boolean eliminarEnfermero(Connection cx, String usuario) {
-        boolean resp = false;
-        String sql = "DELETE FROM enfermeros WHERE usuario='"+usuario+"'";
-        try {
-            st = cx.createStatement();
-            st.executeUpdate(sql);
-            resp = true;
-        } catch (SQLException ex) {
-            Logger.getLogger(Consultas.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        return resp;
-    }    
     
     //REGISTRAR VACUNA
     public boolean registrarVacuna(Connection cx, Vacuna vac) {
@@ -150,6 +137,25 @@ public class Consultas {
         }
         return vac;
     }
+    //BUSCAR VACUNA POR ID
+    public Vacuna buscarVacunaID(Connection cx, String id) {
+        String sql = "SELECT * FROM vacuna WHERE id='" + id + "'";
+        Vacuna vac = null;
+        try {
+            st = cx.createStatement();
+            rs = st.executeQuery(sql);
+            if (rs.next()) {
+                vac = new Vacuna();
+                vac.setId(rs.getInt("id"));
+                vac.setNombre(rs.getString("nombre"));
+                vac.setDosis(rs.getString("dosis"));
+                vac.setCantidad(rs.getInt("cantidad"));
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(Consultas.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return vac;
+    }
 
     //MODIFICAR VACUNA
     public boolean modificarVacuna(Connection cx, Vacuna vac) {
@@ -168,11 +174,117 @@ public class Consultas {
         }
         return resp;
     }
-
-    //ELIMINAR VACUNA
-    public boolean eliminarVacuna(Connection cx, String id) {
+    
+    //REGISTRAR PACIENTE
+    public boolean registrarPaciente(Connection cx, Paciente pac) {
         boolean resp = false;
-        String sql = "DELETE FROM vacuna WHERE id='"+id+"'";
+        String ced = pac.getCedula();
+        String nom = pac.getNombre();
+        String tel = pac.getTelefono();
+        String dir = pac.getDireccion();
+        String edad = ""+pac.getEdad();
+        String sql = "INSERT INTO paciente (cedula, nombre, telefono, direccion, edad) VALUES('"+ced+"','"+nom+"','"+tel+"','"+dir+"','"+edad+"')";
+        try {
+            st = cx.createStatement();
+            st.executeUpdate(sql);
+            resp = true;
+        } catch (SQLException ex) {
+            Logger.getLogger(Consultas.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return resp;
+    }
+
+    //BUSCAR PACIENTE POR CEDULA
+    public Paciente buscarPaciente(Connection cx, String cedula) {
+        String sql = "SELECT * FROM paciente WHERE cedula='" + cedula + "'";
+        Paciente pac = null;
+        try {
+            st = cx.createStatement();
+            rs = st.executeQuery(sql);
+            if (rs.next()) {
+                pac = new Paciente();
+                pac.setCedula(rs.getString("cedula"));
+                pac.setNombre(rs.getString("nombre"));
+                pac.setTelefono(rs.getString("telefono"));
+                pac.setDireccion(rs.getString("direccion"));
+                pac.setEdad(rs.getInt("edad"));
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(Consultas.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return pac;
+    }
+
+    //MODIFICAR PACIENTE
+    public boolean modificarPaciente(Connection cx, Paciente pac) {
+        boolean resp = false;
+        String ced = pac.getCedula();
+        String nom = pac.getNombre();
+        String tel = pac.getTelefono();
+        String dir = pac.getDireccion();
+        String edad = ""+pac.getEdad();
+        String sql = "UPDATE paciente SET nombre='"+nom+"',telefono='"+tel+"',direccion='"+dir+"',edad='"+edad+"' WHERE cedula='"+ced+"'";
+        try {
+            st = cx.createStatement();
+            st.executeUpdate(sql);
+            resp = true;
+        } catch (SQLException ex) {
+            Logger.getLogger(Consultas.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return resp;
+    }
+
+    //BUSCAR PACIENTE_VACUNA POR CEDULA
+    public ArrayList<Paciente_vacuna> buscarPacienteVacuna(Connection cx, String cedula) {
+        String sql = "SELECT * FROM paciente_vacuna WHERE paciente='" + cedula + "'";
+        ArrayList<Paciente_vacuna> listado = new ArrayList<>();
+        Paciente_vacuna pv = null;
+        try {
+            st = cx.createStatement();
+            rs = st.executeQuery(sql);
+            while (rs.next()) {
+                pv = new Paciente_vacuna();
+                pv.setPaciente(rs.getString("paciente"));
+                pv.setVacuna(rs.getString("vacuna"));
+                pv.setEnfermero(rs.getString("enfermero"));
+                pv.setFecha(rs.getString("fecha"));
+                listado.add(pv);
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(Consultas.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return listado;
+    }
+
+    //LISTAR TODAS LAS VACUNAS REGISTRADAS
+    public ArrayList<Vacuna> listarVacunas(Connection cx){
+        String sql = "SELECT * FROM vacuna";
+        ArrayList<Vacuna> listado = new ArrayList<Vacuna>();
+        try {
+            st = cx.createStatement();
+            rs = st.executeQuery(sql);
+            while (rs.next()) {
+                Vacuna vac = new Vacuna();
+                vac.setId(rs.getInt("id"));
+                vac.setNombre(rs.getString("nombre"));
+                vac.setDosis(rs.getString("dosis"));
+                vac.setCantidad(rs.getInt("cantidad"));
+                listado.add(vac);
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(Consultas.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return listado;
+    }
+    
+    //REGISTRAR NUEVA VACUNA PUESTA
+    public boolean registrarVacunaPuesta(Connection cx, Paciente_vacuna pv) {
+        boolean resp = false;
+        String pac = pv.getPaciente();
+        String vac = ""+pv.getVacuna();
+        String enf = pv.getEnfermero();
+        String fecha = pv.getFecha();
+        String sql = "INSERT INTO paciente_vacuna (paciente, vacuna, enfermero, fecha) VALUES('"+pac+"','"+vac+"','"+enf+"','"+fecha+"')";
         try {
             st = cx.createStatement();
             st.executeUpdate(sql);

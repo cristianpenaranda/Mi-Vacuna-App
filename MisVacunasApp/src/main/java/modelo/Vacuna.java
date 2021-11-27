@@ -9,7 +9,7 @@ public class Vacuna {
     private int id, cantidad;
 
     //CONSTRUCTOR VACIO DE LA CLASE
-    Vacuna() {}
+    public Vacuna() {}
 
     //CONSTRUCTOR DE LA CLASE
     public Vacuna(String nombre, String dosis, int cantidad) {

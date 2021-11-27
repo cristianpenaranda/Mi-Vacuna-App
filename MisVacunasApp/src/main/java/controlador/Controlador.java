@@ -4,10 +4,13 @@
  */
 package controlador;
 
+import java.util.ArrayList;
 import modelo.Administrador;
 import modelo.Conexion;
 import modelo.Consultas;
 import modelo.Enfermero;
+import modelo.Paciente;
+import modelo.Paciente_vacuna;
 import modelo.Vacuna;
 
 public class Controlador {
@@ -34,7 +37,7 @@ public class Controlador {
             this.conexion.conectar_BD();
             Enfermero enf = consultas.buscarEnfermero(conexion.getConexion(), usuario);
             if(enf != null && enf.getClave().equalsIgnoreCase(clave)){
-                resp = enf.getNombre();
+                resp = enf.getUsuario();
             }
         }else{
             resp = "false";
@@ -67,18 +70,7 @@ public class Controlador {
         }
         return resp;
     }
-    
-    //ELIMINAR ENFERMERO
-    public boolean eliminarEnfermero(String usuario){
-        boolean resp = false;
-        Enfermero consulta = buscarEnfermero(usuario);
-        if(consulta != null){
-           resp = consultas.eliminarEnfermero(conexion.getConexion(), usuario);
-        }
-        return resp;
-    }
-    
-    
+        
     //REGISTRAR VACUNA
     public boolean registrarVacuna(String nombre, int cantidad, String dosis){
         boolean resp = false;
@@ -95,22 +87,41 @@ public class Controlador {
         return consultas.buscarVacuna(conexion.getConexion(), nombre);
     } 
     
+    //BUSCAR VACUNA POR ID
+    public Vacuna buscarVacunaID(String id){
+        return consultas.buscarVacunaID(conexion.getConexion(), id);
+    } 
+    
     //MODIFICAR VACUNA
     public boolean modificarVacuna(Vacuna vac){
         boolean resp = false;
         Vacuna consulta = buscarVacuna(vac.getNombre());
         if(consulta != null){
-           resp = consultas.modificarVacuna(conexion.getConexion(), consulta);
+            vac.setId(consulta.getId());
+           resp = consultas.modificarVacuna(conexion.getConexion(), vac);
         }
         return resp;
     }
     
-    //ELIMINAR VACUNA
-    public boolean eliminarVacuna(String nombre){
+    //REGISTRAR PACIENTE
+    public boolean registrarPaciente(Paciente pac){
         boolean resp = false;
-        Vacuna consulta = buscarVacuna(nombre);
-        if(consulta != null){
-           resp = consultas.eliminarVacuna(conexion.getConexion(), ""+consulta.getId());
+        if(buscarPaciente(pac.getCedula()) == null){
+           resp = consultas.registrarPaciente(conexion.getConexion(), pac);
+        }
+        return resp;
+    }
+    
+    //BUSCAR PACIENTE POR CEDULA
+    public Paciente buscarPaciente(String cedula){
+        return consultas.buscarPaciente(conexion.getConexion(), cedula);
+    } 
+    
+    //MODIFICAR PACIENTE
+    public boolean modificarPaciente(Paciente pac){
+        boolean resp = false;
+        if(buscarPaciente(pac.getCedula()) != null){
+           resp = consultas.modificarPaciente(conexion.getConexion(), pac);
         }
         return resp;
     }
@@ -119,5 +130,19 @@ public class Controlador {
     public void desconectar_BD(){
         this.conexion.desconectar_BD();
     }
+
+    //BUSCAR PACIENTE_VACUNA
+    public ArrayList<Paciente_vacuna> buscarPacienteVacuna(String cedula) {
+        return consultas.buscarPacienteVacuna(conexion.getConexion(), cedula);
+    }
     
+    //LISTAR TODAS LAS VACUNAS REGISTRADAS
+    public ArrayList<Vacuna> listarVacunas(){
+        return consultas.listarVacunas(conexion.getConexion());
+    }
+    
+    //REGISTRAR NUEVA VACUNA PUESTA
+    public boolean registrarVacunaPuesta(Paciente_vacuna pv){
+        return consultas.registrarVacunaPuesta(conexion.getConexion(), pv);
+    }
 }

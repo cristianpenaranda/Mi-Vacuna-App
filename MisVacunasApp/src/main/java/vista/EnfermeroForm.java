@@ -4,13 +4,24 @@
  */
 package vista;
 
+import java.awt.event.ItemEvent;
+import java.util.ArrayList;
+import java.util.Date;
+import javax.swing.Icon;
 import javax.swing.ImageIcon;
+import javax.swing.JOptionPane;
+import modelo.Enfermero;
+import modelo.Paciente;
+import modelo.Paciente_vacuna;
+import modelo.Vacuna;
+import org.w3c.dom.events.Event;
 
 
 public class EnfermeroForm extends javax.swing.JFrame {
 
     private LoginForm inicio;
     private String enfermero;
+    private Icon icono_exito;
     
     public EnfermeroForm(LoginForm i, String enf) {
         this.inicio = i;
@@ -19,11 +30,22 @@ public class EnfermeroForm extends javax.swing.JFrame {
         this.cambias_iconos();
         this.setLocationRelativeTo(null);       
         this.lblEnf.setText(enf);
+        icono_exito = new ImageIcon("imagenes/icono_success.png");
+        this.listarVacunas();
     }
 
     private void cambias_iconos() {
         ImageIcon icono = new ImageIcon("imagenes/Logo.png");
         this.imgLogin.setIcon(icono);
+    }
+    
+    private void listarVacunas(){
+        this.cmbVacuna.removeAllItems();
+        this.cmbVacuna.addItem("Seleccionar...");
+        ArrayList<Vacuna> listado = this.inicio.getControlador().listarVacunas();
+        for(int i=0; i<listado.size(); i++){
+            this.cmbVacuna.addItem(listado.get(i).getNombre());
+        }
     }
     /**
      * This method is called from within the constructor to initialize the form.
@@ -55,7 +77,6 @@ public class EnfermeroForm extends javax.swing.JFrame {
         btnBuscarPaciente = new javax.swing.JButton();
         btnRegistroPaciente = new javax.swing.JButton();
         btnModificarPaciente = new javax.swing.JButton();
-        btnEliminarPaciente = new javax.swing.JButton();
         jLabel14 = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
         txtObs = new javax.swing.JTextArea();
@@ -130,12 +151,25 @@ public class EnfermeroForm extends javax.swing.JFrame {
         jLabel13.setText("Edad");
 
         btnBuscarPaciente.setText("BUSCAR");
+        btnBuscarPaciente.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnBuscarPacienteActionPerformed(evt);
+            }
+        });
 
         btnRegistroPaciente.setText("REGISTRAR");
+        btnRegistroPaciente.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnRegistroPacienteActionPerformed(evt);
+            }
+        });
 
         btnModificarPaciente.setText("MODIFICAR");
-
-        btnEliminarPaciente.setText("ELIMINAR");
+        btnModificarPaciente.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnModificarPacienteActionPerformed(evt);
+            }
+        });
 
         jLabel14.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
         jLabel14.setText("Observaciones");
@@ -150,11 +184,7 @@ public class EnfermeroForm extends javax.swing.JFrame {
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addComponent(jLabel14)
-                        .addGap(18, 18, 18)
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 206, Short.MAX_VALUE))
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel2Layout.createSequentialGroup()
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabel7)
@@ -168,13 +198,16 @@ public class EnfermeroForm extends javax.swing.JFrame {
                             .addComponent(txtNomPaciente)
                             .addComponent(txtTelPaciente)
                             .addComponent(txtDirPaciente)
-                            .addComponent(txtEdadPaciente))))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 32, Short.MAX_VALUE)
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(btnRegistroPaciente, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btnBuscarPaciente, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btnModificarPaciente, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btnEliminarPaciente, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(txtEdadPaciente))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 32, Short.MAX_VALUE)
+                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(btnRegistroPaciente, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(btnBuscarPaciente, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(btnModificarPaciente, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addComponent(jLabel14)
+                        .addGap(18, 18, 18)
+                        .addComponent(jScrollPane1)))
                 .addContainerGap())
         );
         jPanel2Layout.setVerticalGroup(
@@ -191,7 +224,7 @@ public class EnfermeroForm extends javax.swing.JFrame {
                         .addComponent(txtNomPaciente, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addComponent(jLabel10))
                     .addComponent(btnBuscarPaciente, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel2Layout.createSequentialGroup()
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(txtTelPaciente, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -203,20 +236,17 @@ public class EnfermeroForm extends javax.swing.JFrame {
                         .addGap(18, 18, 18)
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(txtEdadPaciente, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel13))
-                        .addGap(18, 18, 18)
-                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(jPanel2Layout.createSequentialGroup()
-                                .addComponent(jLabel14)
-                                .addGap(0, 0, Short.MAX_VALUE))
-                            .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 85, Short.MAX_VALUE))
-                        .addContainerGap())
+                            .addComponent(jLabel13)))
                     .addGroup(jPanel2Layout.createSequentialGroup()
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(btnModificarPaciente, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(btnEliminarPaciente, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+                        .addComponent(btnModificarPaciente, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addGap(18, 18, 18)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addComponent(jLabel14)
+                        .addGap(0, 70, Short.MAX_VALUE))
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 85, Short.MAX_VALUE))
+                .addContainerGap())
         );
 
         jTabbedPane1.addTab("GESTIÓN PACIENTES", jPanel2);
@@ -229,16 +259,31 @@ public class EnfermeroForm extends javax.swing.JFrame {
         txtCedVacuna.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
 
         btnRegistroVacuna.setText("REGISTRAR");
+        btnRegistroVacuna.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnRegistroVacunaActionPerformed(evt);
+            }
+        });
 
         btnBuscarVacuna.setText("BUSCAR");
+        btnBuscarVacuna.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnBuscarVacunaActionPerformed(evt);
+            }
+        });
 
         cmbVacuna.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Seleccionar..." }));
+        cmbVacuna.addItemListener(new java.awt.event.ItemListener() {
+            public void itemStateChanged(java.awt.event.ItemEvent evt) {
+                cmbVacunaItemStateChanged(evt);
+            }
+        });
 
         jLabel19.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
         jLabel19.setText("Observaciones");
 
         lblDosisVacuna.setFont(new java.awt.Font("Tahoma", 2, 12)); // NOI18N
-        lblDosisVacuna.setText("Cantidad de vacunas");
+        lblDosisVacuna.setText("Cantidad de vacunas en inventario");
 
         txtObsVacuna.setColumns(20);
         txtObsVacuna.setRows(5);
@@ -255,21 +300,23 @@ public class EnfermeroForm extends javax.swing.JFrame {
                 .addContainerGap()
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel18)
-                    .addComponent(jLabel19)
-                    .addComponent(jLabel20))
+                    .addComponent(jLabel20)
+                    .addComponent(jLabel19))
                 .addGap(18, 18, 18)
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(lblDosisVacuna, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(cmbVacuna, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 210, Short.MAX_VALUE)
-                    .addComponent(txtCedVacuna))
-                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel3Layout.createSequentialGroup()
-                        .addGap(28, 28, 28)
-                        .addComponent(btnBuscarVacuna, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(btnRegistroVacuna, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(lblDosisVacuna, javax.swing.GroupLayout.DEFAULT_SIZE, 210, Short.MAX_VALUE)
+                            .addComponent(cmbVacuna, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(txtCedVacuna))
+                        .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(jPanel3Layout.createSequentialGroup()
+                                .addGap(28, 28, 28)
+                                .addComponent(btnBuscarVacuna, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(btnRegistroVacuna, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                    .addComponent(jScrollPane2))
                 .addContainerGap())
         );
         jPanel3Layout.setVerticalGroup(
@@ -282,17 +329,20 @@ public class EnfermeroForm extends javax.swing.JFrame {
                     .addComponent(btnBuscarVacuna, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(btnRegistroVacuna, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(jLabel19))
-                    .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(cmbVacuna, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel20))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(lblDosisVacuna)
-                .addContainerGap(122, Short.MAX_VALUE))
+                    .addComponent(btnRegistroVacuna, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(jPanel3Layout.createSequentialGroup()
+                        .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(cmbVacuna, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel20))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(lblDosisVacuna)))
+                .addGap(18, 18, 18)
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel3Layout.createSequentialGroup()
+                        .addComponent(jLabel19)
+                        .addGap(0, 0, Short.MAX_VALUE))
+                    .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 180, Short.MAX_VALUE))
+                .addContainerGap())
         );
 
         jTabbedPane1.addTab("GESTIÓN DE VACUNAS", jPanel3);
@@ -439,11 +489,161 @@ public class EnfermeroForm extends javax.swing.JFrame {
         this.inicio.getCmbTipoLogin().setSelectedIndex(0);
     }//GEN-LAST:event_btnCerrarAdminActionPerformed
 
+    private void btnRegistroPacienteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRegistroPacienteActionPerformed
+        String cedula = this.txtCedPaciente.getText();
+        String nombre = this.txtNomPaciente.getText();
+        String telefono = this.txtTelPaciente.getText();
+        String direccion = this.txtDirPaciente.getText();
+        String edad = this.txtEdadPaciente.getText();
+        String observacion = this.txtObs.getText();
+
+        if (cedula.isEmpty() || nombre.isEmpty() || telefono.isEmpty() || direccion.isEmpty() || edad.isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Debe llenar todos los campos...", "FALTA INFORMACIÓN", JOptionPane.INFORMATION_MESSAGE);
+        } else {
+            Paciente pac = new Paciente(cedula, nombre, telefono, direccion, Integer.parseInt(edad));
+            boolean registro = this.inicio.getControlador().registrarPaciente(pac);
+            if (registro) {
+                this.borrarCampos();
+                JOptionPane.showMessageDialog(this, "Se ha registrado el paciente exitosamente", "PACIENTE REGISTRADO", JOptionPane.PLAIN_MESSAGE, this.icono_exito);
+            } else {
+                JOptionPane.showMessageDialog(this, "El paciente ya se encuentra registrado...", "PACIENTE NO REGISTRADO", JOptionPane.ERROR_MESSAGE);
+            }
+        }
+    }//GEN-LAST:event_btnRegistroPacienteActionPerformed
+
+    private void btnBuscarPacienteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBuscarPacienteActionPerformed
+        String cedula = this.txtCedPaciente.getText();
+        if (cedula.isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Debe ingresar la cédula para buscar al paciente...", "FALTA INFORMACIÓN", JOptionPane.INFORMATION_MESSAGE);
+        } else {
+            Paciente pac = this.inicio.getControlador().buscarPaciente(cedula);
+            if (pac != null) {
+                this.txtNomPaciente.setText(pac.getNombre());
+                this.txtTelPaciente.setText(pac.getTelefono());
+                this.txtDirPaciente.setText(pac.getDireccion());
+                this.txtEdadPaciente.setText(""+pac.getEdad());
+                ArrayList<Paciente_vacuna> pv = this.inicio.getControlador().buscarPacienteVacuna(cedula);
+                if(pv.size() > 0){
+                    String cad = "El paciente "+this.inicio.getControlador().buscarPaciente(pv.get(0).getPaciente()).getNombre()+"\ntiene puestas las siguientes dosis:";
+                    for (int i = 0; i < pv.size(); i++) {
+                        cad += "\n\nVacuna= " + this.inicio.getControlador().buscarVacunaID(pv.get(i).getVacuna()).getNombre() + 
+                                "\nPuesta por= " + this.inicio.getControlador().buscarEnfermero(pv.get(i).getEnfermero()).getNombre()+ 
+                                "\nFecha= " + pv.get(i).getFecha();
+                        this.txtObs.setText(cad);
+                    }
+                }else{
+                    this.txtObs.setText("El paciente no tiene dosis aplicadas");
+                }
+            } else {
+                JOptionPane.showMessageDialog(this, "No existe ningún paciente con esa cédula...", "PACIENTE NO ENCONTRADO", JOptionPane.ERROR_MESSAGE);
+            }
+        }
+    }//GEN-LAST:event_btnBuscarPacienteActionPerformed
+
+    private void btnModificarPacienteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnModificarPacienteActionPerformed
+        String cedula = this.txtCedPaciente.getText();
+        String nombre = this.txtNomPaciente.getText();
+        String telefono = this.txtTelPaciente.getText();
+        String direccion = this.txtDirPaciente.getText();
+        String edad = this.txtEdadPaciente.getText();
+        String observacion = this.txtObs.getText();
+
+        if (cedula.isEmpty() || nombre.isEmpty() || telefono.isEmpty() || direccion.isEmpty() || edad.isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Para modificar la información no pueden haber campos vacíos...", "FALTA INFORMACIÓN", JOptionPane.INFORMATION_MESSAGE);
+        } else {
+            Paciente pac = new Paciente(cedula, nombre, telefono, direccion, Integer.parseInt(edad));
+            boolean modificar = this.inicio.getControlador().modificarPaciente(pac);
+            if (modificar) {
+                this.borrarCampos();
+                JOptionPane.showMessageDialog(this, "Se ha modificado la información del paciente exitosamente", "PACIENTE MODIFICADO", JOptionPane.PLAIN_MESSAGE, this.icono_exito);
+            } else {
+                JOptionPane.showMessageDialog(this, "No se pudo modificar la información del paciente...", "PACIENTE NO MODIFICADO", JOptionPane.ERROR_MESSAGE);
+            }
+        }
+    }//GEN-LAST:event_btnModificarPacienteActionPerformed
+
+    private void btnBuscarVacunaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBuscarVacunaActionPerformed
+        String cedula = this.txtCedVacuna.getText();
+        if (cedula.isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Debe ingresar la cédula para buscar al paciente...", "FALTA INFORMACIÓN", JOptionPane.INFORMATION_MESSAGE);
+        } else {
+            Paciente pac = this.inicio.getControlador().buscarPaciente(cedula);
+            if (pac != null) {
+                ArrayList<Paciente_vacuna> pv = this.inicio.getControlador().buscarPacienteVacuna(cedula);
+                if(pv.size() > 0){
+                    String cad = "El paciente "+this.inicio.getControlador().buscarPaciente(pv.get(0).getPaciente()).getNombre()+"\ntiene puestas las siguientes dosis:";
+                    for (int i = 0; i < pv.size(); i++) {
+                        cad += "\n\nVacuna= " + this.inicio.getControlador().buscarVacunaID(pv.get(i).getVacuna()).getNombre() + 
+                                "\nPuesta por= " + this.inicio.getControlador().buscarEnfermero(pv.get(i).getEnfermero()).getNombre()+ 
+                                "\nFecha= " + pv.get(i).getFecha();
+                        this.txtObsVacuna.setText(cad);
+                    }
+                }else{
+                     this.txtObs.setText("El paciente no tiene dosis aplicadas");
+                }
+            } else {
+                JOptionPane.showMessageDialog(this, "No existe ningún paciente con esa cédula...", "PACIENTE NO ENCONTRADO", JOptionPane.ERROR_MESSAGE);
+            }
+        }
+    }//GEN-LAST:event_btnBuscarVacunaActionPerformed
+
+    private void cmbVacunaItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_cmbVacunaItemStateChanged
+        if(evt.getStateChange()==ItemEvent.SELECTED){
+            String vacuna = this.cmbVacuna.getSelectedItem().toString();
+            if(vacuna.equalsIgnoreCase("Seleccionar...")){
+                this.lblDosisVacuna.setText("Cantidad de vacunas en inventario");
+            }else{
+                ArrayList<Vacuna> listado = this.inicio.getControlador().listarVacunas();
+                for(int i=0; i<listado.size(); i++){
+                    if(listado.get(i).getNombre().equalsIgnoreCase(vacuna)){
+                        this.lblDosisVacuna.setText("Quedan "+listado.get(i).getCantidad()+" de dosis de "+vacuna);
+                    }
+                }
+            }
+        }
+    }//GEN-LAST:event_cmbVacunaItemStateChanged
+
+    private void btnRegistroVacunaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRegistroVacunaActionPerformed
+        String cedula = this.txtCedVacuna.getText();
+        String vacuna = this.cmbVacuna.getSelectedItem().toString();
+        Date date = new Date();
+        String fecha = date.getDate()+"/"+(date.getMonth()+1)+"/"+(date.getYear()+1900)+" - "+date.getHours()+":"+date.getMinutes();
+        
+        if (cedula.isEmpty() || vacuna.equalsIgnoreCase("Seleccionar...")) {
+            JOptionPane.showMessageDialog(this, "Debe ingresar la cédula del paciente y seleccionar la vacuna a aplicar...", "FALTA INFORMACIÓN", JOptionPane.INFORMATION_MESSAGE);
+        } else {
+            Vacuna vac = this.inicio.getControlador().buscarVacuna(vacuna);
+            Paciente_vacuna pav = new Paciente_vacuna(cedula, ""+vac.getId(), this.lblEnf.getText(), fecha);
+            if(vac.getCantidad()>0){
+                boolean registrar = this.inicio.getControlador().registrarVacunaPuesta(pav);
+                if(registrar){
+                    this.borrarCampos();
+                    JOptionPane.showMessageDialog(this, "Se ha registrado exitosamente", "REGISTRADO", JOptionPane.PLAIN_MESSAGE, this.icono_exito);
+                } else {
+                    JOptionPane.showMessageDialog(this, "No se pudo registrar...", "NO REGISTRADO", JOptionPane.ERROR_MESSAGE);
+                }
+            }else{
+                JOptionPane.showMessageDialog(this, "No se pudo vacunar porque no hay dosis disponibles de la vacuna seleccionada...", "NO HAY DOSIS DE LA VACUNA SELECCIONADA", JOptionPane.ERROR_MESSAGE);
+            }
+        }
+    }//GEN-LAST:event_btnRegistroVacunaActionPerformed
+
+    private void borrarCampos() {
+        this.txtCedPaciente.setText("");
+        this.txtNomPaciente.setText("");
+        this.txtTelPaciente.setText("");
+        this.txtDirPaciente.setText("");
+        this.txtEdadPaciente.setText("");
+        this.txtObs.setText("");
+        this.txtCedVacuna.setText("");
+        this.txtObsVacuna.setText("");
+        this.cmbVacuna.setSelectedIndex(0);
+    }
+    
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnBuscarPaciente;
     private javax.swing.JButton btnBuscarVacuna;
     private javax.swing.JButton btnCerrarAdmin;
-    private javax.swing.JButton btnEliminarPaciente;
     private javax.swing.JButton btnModificarPaciente;
     private javax.swing.JButton btnRegistroPaciente;
     private javax.swing.JButton btnRegistroVacuna;
